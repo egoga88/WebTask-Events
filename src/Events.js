@@ -1,36 +1,68 @@
-/*
-   1. Создайте функцию createButton(). Необходимо, чтобы эта функция осуществила вставку в body тег button с текстом: "Удали меня".
-      При клике по button удалить этот button.
-*/
-export function createButton() {}
+export function createButton() {
+    const button = document.createElement('button');
+    button.textContent = 'Удали меня';
 
-/*
-   2. Создайте функцию createArrList(arr), в которую передается 1 параметр: arr - массив строк.
-      Функция выводит этот массив в виде маркированного списка внутри тега body.
-      При наведении курсора мыши на элемент списка у этого элемента создается атрибут title, в котором записан его текст.
-*/
-export function createArrList(arr) {}
+    button.addEventListener('click', () => {
+        button.remove();
+    });
 
-/*
-   3. Создайте функцию createLink(), которая сгенерирует следующую разметку и вставит ее в body:
+    document.body.append(button);
+}
 
-      <a href="https://tensor.ru/">tensor</a>
+export function createArrList(arr) {
+    const ul = document.createElement('ul');
 
-      При первом клике по ссылке в конец ее текста через пробел дописывается ее href.
-      При следующем клике происходит действие по умолчанию (переход по ссылке в текущей вкладке).
-*/
-export function createLink() {}
+    arr.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
 
-/*
-   4. Создайте функцию createList(), которая сгенерирует следующую разметку и вставит ее в body:
+        li.addEventListener('mouseover', () => {
+            li.title = li.textContent;
+        });
 
-      <ul>
-         <li>Пункт</li>
-      </ul>
-      <button>Добавить пункт</button>
+        ul.append(li);
+    });
 
-      При клике по элементу li ему в конец текста добавляется восклицательный знак.
-      При клике по button в конец списка добавляется новый элемент li с текстом: "Пункт".
-      Клик по новому li также добавляет восклицательный знак в конец текста.
-*/
-export function createList() {}
+    document.body.append(ul);
+}
+
+export function createLink() {
+    const link = document.createElement('a');
+    link.href = 'https://tensor.ru/';
+    link.textContent = 'tensor';
+
+    link.addEventListener(
+        'click',
+        (event) => {
+            event.preventDefault();
+            link.textContent += ` ${link.href}`;
+        },
+        { once: true },
+    );
+
+    document.body.append(link);
+}
+
+export function createList() {
+    const ul = document.createElement('ul');
+    const initialLi = document.createElement('li');
+    initialLi.textContent = 'Пункт';
+    ul.append(initialLi);
+
+    const button = document.createElement('button');
+    button.textContent = 'Добавить пункт';
+
+    ul.addEventListener('click', (event) => {
+        if (event.target.tagName === 'LI') {
+            event.target.textContent += '!';
+        }
+    });
+
+    button.addEventListener('click', () => {
+        const newLi = document.createElement('li');
+        newLi.textContent = 'Пункт';
+        ul.append(newLi);
+    });
+
+    document.body.append(ul, button);
+}
